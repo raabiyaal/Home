@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Furnished rooms in Hyde Park</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=IBM+Plex+Mono:wght@400;500&family=Inter+Tight:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* =====================================================
+   EDIT ME: two places only.
+   1. The data objects at the top of the script below.
+   2. The images/ folder sitting next to this file.
+   ===================================================== */
+
+:root{
+  --ink:#0C2422;
+  --panel:#123230;
+  --line:#3C625E;
+  --brass:#C9A45C;
+  --paper:#F0EBE0;
+  --muted:#9AB4B0;
+  --mint:#79CFA6;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--ink);color:var(--paper);
+  font-family:"Inter Tight",system-ui,sans-serif;font-size:16px;line-height:1.6;
+}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+section{padding:76px 0;border-top:1px solid rgba(60,98,94,.55)}
+
+h1,h2{font-family:"Fraunces",serif;margin:0;line-height:1.02;font-weight:700}
+h1{font-size:clamp(2.7rem,8vw,5.4rem);letter-spacing:-.02em}
+h2{font-size:clamp(1.7rem,4vw,2.5rem);letter-spacing:-.01em}
+.eyebrow{
+  font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--brass);margin:0 0 16px;
+}
+.lede{color:var(--muted);max-width:48ch;margin:20px 0 0}
+.mono{font-family:"IBM Plex Mono",monospace}
+
+/* ---------- header ---------- */
+header{padding:70px 0 44px}
+header h1 em{font-style:normal;color:var(--brass)}
+.rule{height:1px;background:var(--brass);opacity:.5;margin:34px 0 0}
+.rule + .rule{margin-top:3px}
+
+/* ---------- floor plan ---------- */
+.plan{margin-top:40px}
+.plan svg{width:100%;height:auto;display:block}
+.wall{fill:none;stroke:var(--line);stroke-width:3}
+.window{stroke:var(--brass);stroke-width:5;stroke-linecap:round;opacity:.8}
+.room{cursor:pointer}
+.room polygon{fill:rgba(60,98,94,.18);stroke:rgba(60,98,94,.7);stroke-width:2;transition:.22s}
+.room:hover polygon{fill:rgba(201,164,92,.14);stroke:var(--brass)}
+.room.is-open polygon{fill:rgba(121,207,166,.09);stroke:var(--mint)}
+.room.is-selected polygon{fill:rgba(201,164,92,.2);stroke:var(--paper);stroke-width:3.5}
+.room text{font-family:"IBM Plex Mono",monospace;fill:var(--muted);font-size:20px;pointer-events:none}
+.room .r-name{fill:var(--paper);font-size:26px;letter-spacing:.04em}
+.room.is-open .r-tag{fill:var(--mint)}
+.room:focus{outline:none}
+.room:focus-visible polygon{stroke:var(--paper);stroke-width:4}
+.plan-hint{font-family:"IBM Plex Mono",monospace;font-size:.76rem;color:var(--line);margin:14px 0 0}
+
+/* ---------- room detail ---------- */
+.detail{display:grid;grid-template-columns:1.15fr 1fr;gap:36px;align-items:start}
+.shot{width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--panel);display:block}
+.shot-empty{
+  width:100%;aspect-ratio:4/3;border:1px dashed rgba(60,98,94,.9);
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  font-family:"IBM Plex Mono",monospace;font-size:.78rem;color:var(--line);padding:24px;
+}
+.thumbs{display:flex;gap:8px;margin-top:10px}
+.thumbs button{
+  width:54px;height:42px;padding:0;border:1px solid rgba(60,98,94,.8);
+  background:var(--panel);cursor:pointer;overflow:hidden;
+}
+.thumbs button[aria-current="true"]{border-color:var(--brass)}
+.thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+
+.chip{
+  display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.7rem;
+  letter-spacing:.14em;text-transform:uppercase;padding:5px 11px;border-radius:99px;
+  border:1px solid var(--mint);color:var(--mint);
+}
+.chip.taken{border-color:rgba(60,98,94,.9);color:var(--muted)}
+.specs{list-style:none;padding:0;margin:22px 0;border-top:1px solid rgba(60,98,94,.55)}
+.specs li{
+  display:flex;justify-content:space-between;gap:16px;padding:11px 0;
+  border-bottom:1px solid rgba(60,98,94,.55);font-size:.92rem;
+}
+.specs span:first-child{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--line)}
+.inroom{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px;padding:0;list-style:none}
+.inroom li{
+  font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--muted);
+  border:1px solid rgba(60,98,94,.8);padding:5px 10px;
+}
+
+/* ---------- shopping list ---------- */
+.tally{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:30px 0 8px}
+.tally b{font-family:"Fraunces",serif;font-size:clamp(2.4rem,7vw,3.8rem);color:var(--brass);line-height:1}
+.tally span{font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:var(--line)}
+.bar{height:4px;background:rgba(60,98,94,.5);margin-bottom:26px}
+.bar i{display:block;height:100%;background:var(--brass);width:100%;transition:width .45s ease}
+.items{display:flex;flex-wrap:wrap;gap:8px;padding:0;margin:0;list-style:none}
+.items button{
+  font-family:"Inter Tight",sans-serif;font-size:.88rem;background:transparent;
+  color:var(--paper);border:1px solid rgba(60,98,94,.9);padding:9px 14px;
+  cursor:pointer;transition:.2s;display:flex;gap:9px;align-items:center;
+}
+.items button:hover{border-color:var(--brass)}
+.items button em{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:.76rem;color:var(--muted)}
+.items button[aria-pressed="true"]{
+  color:var(--line);border-color:rgba(60,98,94,.45);text-decoration:line-through;
+}
+.items button[aria-pressed="true"] em{color:var(--mint);text-decoration:none}
+.sweep{
+  margin-top:22px;background:transparent;color:var(--brass);border:1px solid var(--brass);
+  font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.14em;
+  text-transform:uppercase;padding:11px 20px;cursor:pointer;
+}
+.sweep:hover{background:var(--brass);color:var(--ink)}
+.done{margin-top:18px;color:var(--mint);display:none}
+.done.show{display:block}
+
+/* ---------- bills ---------- */
+.switch{display:inline-flex;border:1px solid rgba(60,98,94,.9);margin:28px 0 22px}
+.switch button{
+  font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.12em;
+  text-transform:uppercase;background:transparent;color:var(--muted);
+  border:none;padding:11px 20px;cursor:pointer;
+}
+.switch button[aria-pressed="true"]{background:var(--paper);color:var(--ink);font-weight:500}
+.bills{list-style:none;padding:0;margin:0;max-width:520px;border-top:1px solid rgba(60,98,94,.55)}
+.bills li{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid rgba(60,98,94,.55)}
+.bills li.zero .amt{color:var(--mint)}
+.bills li.total{border-bottom:none;padding-top:20px;font-family:"Fraunces",serif;font-size:1.6rem}
+.bills .amt{font-family:"IBM Plex Mono",monospace}
+
+/* ---------- included inventory ---------- */
+.count{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:30px 0 26px}
+.count b{font-family:"Fraunces",serif;font-size:clamp(2.4rem,7vw,3.8rem);color:var(--brass);line-height:1}
+.count span{font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:var(--line)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.tabs button{
+  font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.12em;
+  text-transform:uppercase;background:transparent;color:var(--muted);
+  border:1px solid rgba(60,98,94,.9);padding:10px 16px;cursor:pointer;transition:.2s;
+}
+.tabs button:hover{color:var(--paper);border-color:var(--brass)}
+.tabs button[aria-pressed="true"]{background:var(--brass);color:var(--ink);border-color:var(--brass);font-weight:500}
+.tabs button i{font-style:normal;opacity:.6;margin-left:7px}
+.blurb{color:var(--muted);margin:0 0 22px;max-width:52ch}
+.inv{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:1px;background:rgba(60,98,94,.55);border:1px solid rgba(60,98,94,.55);list-style:none;padding:0;margin:0}
+.inv li{background:var(--ink);padding:14px 16px;font-size:.9rem;display:flex;gap:10px;align-items:baseline}
+.inv li::before{content:"\2713";color:var(--mint);font-size:.85rem}
+.inv li.free{color:var(--brass)}
+.inv li.free::before{color:var(--brass)}
+
+/* ---------- contact ---------- */
+.cta{
+  display:inline-block;margin-top:24px;background:var(--brass);color:var(--ink);
+  text-decoration:none;font-weight:500;padding:16px 32px;
+}
+.cta:hover{filter:brightness(1.08)}
+footer{padding:48px 0 76px;color:var(--line);font-size:.8rem}
+
+@media (max-width:780px){
+  .detail{grid-template-columns:1fr;gap:24px}
+  section{padding:54px 0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">Two furnished rooms &middot; Hyde Park, Chicago</p>
+  <h1>Arrive with<br>a <em>suitcase.</em></h1>
+  <p class="lede">Every room is furnished. The kitchen has the pots, the pans, the forks and the knives. Cleaning supplies are under the sink. Water, gas, electricity and internet are already on and already paid for. You unpack and you live here.</p>
+  <div class="rule"></div><div class="rule"></div>
+</header>
+
+<!-- ============ FLOOR PLAN ============
+     Traced from the real layout. Three blocks joined by a hall.
+     Coordinate space is 1700 x 800. To move a wall, edit the
+     polygon points and the matching label x/y underneath it.
+============================================== -->
+<div class="plan">
+<svg viewBox="0 0 1700 800" role="img" aria-label="Floor plan">
+
+  <g class="room" data-room="kitchen" tabindex="0" role="button" aria-label="Kitchen">
+    <polygon points="45,135 425,135 425,415 45,415"/>
+    <text class="r-name" x="80" y="190">Kitchen</text>
+    <text class="r-tag" x="80" y="222">shared</text>
+  </g>
+
+  <g class="room" data-room="dining" tabindex="0" role="button" aria-label="Dining room">
+    <polygon points="45,415 425,415 425,670 45,670"/>
+    <text class="r-name" x="80" y="470">Dining</text>
+    <text class="r-tag" x="80" y="502">seats eight</text>
+  </g>
+
+  <g class="room" data-room="room-a" tabindex="0" role="button" aria-label="Room A">
+    <polygon points="425,135 470,80 825,80 825,415 425,415"/>
+    <text class="r-name" x="500" y="190">Room A</text>
+    <text class="r-tag" x="500" y="222">largest</text>
+  </g>
+
+  <g class="room" data-room="room-b" tabindex="0" role="button" aria-label="Room B">
+    <polygon points="825,80 1080,80 1125,135 1125,360 980,360 980,415 825,415"/>
+    <text class="r-name" x="855" y="140">Room B</text>
+    <text class="r-tag" x="855" y="172">bright</text>
+  </g>
+
+  <g class="room" data-room="living" tabindex="0" role="button" aria-label="Living room">
+    <polygon points="1140,135 1580,135 1645,195 1645,340 1580,410 1215,410 1140,340"/>
+    <text class="r-name" x="1185" y="195">Living</text>
+    <text class="r-tag" x="1185" y="227">bay windows</text>
+  </g>
+
+  <g class="room" data-room="hall" tabindex="0" role="button" aria-label="Hallway">
+    <polygon points="425,415 1250,415 1250,530 1140,530 1140,475 425,475"/>
+    <text class="r-tag" x="460" y="455">hall</text>
+  </g>
+
+  <g class="room" data-room="bath" tabindex="0" role="button" aria-label="Bathroom">
+    <polygon points="500,480 745,480 745,700 500,700"/>
+    <text class="r-name" x="530" y="535">Bath</text>
+    <text class="r-tag" x="530" y="567">tub and shower</text>
+  </g>
+
+  <g class="room" data-room="room-c" tabindex="0" role="button" aria-label="Room C">
+    <polygon points="1165,535 1470,535 1470,745 1165,745"/>
+    <text class="r-name" x="1195" y="595">Room C</text>
+    <text class="r-tag" x="1195" y="627">taken</text>
+  </g>
+
+  <!-- windows on the outside walls -->
+  <g stroke-linecap="round">
+    <line class="window" x1="45" y1="165" x2="45" y2="240"/>
+    <line class="window" x1="45" y1="500" x2="45" y2="585"/>
+    <line class="window" x1="640" y1="80" x2="740" y2="80"/>
+    <line class="window" x1="890" y1="80" x2="990" y2="80"/>
+    <line class="window" x1="1300" y1="135" x2="1450" y2="135"/>
+    <line class="window" x1="1645" y1="215" x2="1645" y2="320"/>
+    <line class="window" x1="1470" y1="580" x2="1470" y2="680"/>
+    <line class="window" x1="500" y1="540" x2="500" y2="620"/>
+  </g>
+</svg>
+</div>
+<p class="plan-hint">Tap any room to look inside and see what comes with it.</p>
+
+<!-- ============ ROOM DETAIL ============ -->
+<section>
+  <p class="eyebrow">Inside</p>
+  <div class="detail">
+    <div>
+      <div id="shotHolder"></div>
+      <div class="thumbs" id="thumbs"></div>
+    </div>
+    <div>
+      <h2 id="dName"></h2>
+      <p style="margin:14px 0 0"><span class="chip" id="dChip"></span></p>
+      <ul class="specs" id="dSpecs"></ul>
+      <p class="eyebrow" style="margin-bottom:10px">Already in this room</p>
+      <ul class="inroom" id="dItems"></ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SHOPPING LIST ============ -->
+<section>
+  <p class="eyebrow">Move in cost</p>
+  <h2>The shopping list you<br>do not have to do.</h2>
+  <p class="lede">This is what it costs to fill an empty apartment. Tap anything you assumed you would have to buy.</p>
+
+  <div class="tally"><b id="total"></b><span id="left"></span></div>
+  <div class="bar"><i id="barFill"></i></div>
+
+  <ul class="items" id="items"></ul>
+  <button class="sweep" id="sweep">Cross off everything</button>
+  <p class="done" id="done">All of it is here. Bring your clothes and your laptop.</p>
+</section>
+
+<!-- ============ BILLS ============ -->
+<section>
+  <p class="eyebrow">Monthly</p>
+  <h2>One number. That is the whole bill.</h2>
+  <p class="lede">Water, gas, electricity and internet are all included. No accounts in your name, no splitting a ComEd bill three ways, no arguing about the thermostat in February.</p>
+
+  <div class="switch" role="group" aria-label="Compare bills">
+    <button data-mode="here" aria-pressed="true">Here</button>
+    <button data-mode="typical" aria-pressed="false">A normal lease</button>
+  </div>
+  <ul class="bills" id="bills"></ul>
+</section>
+
+<!-- ============ WHAT IS INCLUDED ============ -->
+<section id="included">
+  <p class="eyebrow">What is included</p>
+  <h2>Open any drawer.<br>It is already stocked.</h2>
+
+  <div class="count"><b id="invCount"></b><span>things you do not have to buy</span></div>
+
+  <div class="tabs" id="tabs" role="group" aria-label="Categories"></div>
+  <p class="blurb" id="invBlurb"></p>
+  <ul class="inv" id="inv"></ul>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section>
+  <p class="eyebrow">Next step</p>
+  <h2>Come see it.</h2>
+  <p class="lede">Tell me which room and when you would move in. I answer within a day and I can usually show it the same week.</p>
+  <a class="cta" href="mailto:you@example.com?subject=Room%20in%20Hyde%20Park">Email me</a>
+</section>
+
+<footer class="mono">Hyde Park, Chicago &middot; Updated July 2026</footer>
+</div>
+
+<script>
+/* ============ EDIT EVERYTHING IN THIS BLOCK ============ */
+
+const ROOMS = {
+  "room-a": {
+    name:"Room A", open:true,
+    specs:[["Rent","$725 / mo"],["Size","Largest room"],["Windows","Two, facing front"],["Available","Sept 1"]],
+    items:["Queen bed and mattress","Dresser","Desk","Desk chair","Nightstand","Lamp","Curtains","Hangers"],
+    photos:["images/room-a-1.jpg","images/room-a-2.jpg","images/room-a-3.gif"]
+  },
+  "room-b": {
+    name:"Room B", open:true,
+    specs:[["Rent","$690 / mo"],["Size","Second largest"],["Windows","Front facing"],["Available","Now"]],
+    items:["Full bed and mattress","Wardrobe","Desk","Desk chair","Nightstand","Lamp","Curtains","Hangers"],
+    photos:["images/room-b-1.jpg","images/room-b-2.jpg"]
+  },
+  "room-c": {
+    name:"Room C", open:false,
+    specs:[["Status","Mine"],["Off","The living room"]],
+    items:["This is my room, so you know who you are living with"],
+    photos:["images/room-c-1.jpg"]
+  },
+  "living": {
+    name:"Living room", open:false,
+    specs:[["Shared","Yes"],["Windows","Bay, three sides"],["Seats","Six comfortably"]],
+    items:["Sofa","Two armchairs","Coffee table","Large rug","TV","Sideboard","Floor lamps"],
+    photos:["images/living-1.jpg","images/living-2.jpg"]
+  },
+  "kitchen": {
+    name:"Kitchen", open:false,
+    specs:[["Shared","Yes"],["Range","Gas"],["Counter","Full run, two sinks area"]],
+    items:["Full cookware set","Knives and boards","Cutlery for eight","Plates, bowls, glasses","Microwave","Toaster","Coffee maker","Kettle","Rice cooker","Blender"],
+    photos:["images/kitchen-1.jpg"]
+  },
+  "dining": {
+    name:"Dining room", open:false,
+    specs:[["Shared","Yes"],["Table","Seats eight"],["Storage","Sideboard"]],
+    items:["Dining table","Eight chairs","Sideboard","Table linens","Serving dishes"],
+    photos:["images/dining-1.jpg"]
+  },
+  "bath": {
+    name:"Bathroom", open:false,
+    specs:[["Shared","Three people"],["Bath","Full tub and shower"],["Storage","Shelving"]],
+    items:["Shower curtain","Bath mat","Hamper","Plunger","Cleaning supplies","Hair dryer"],
+    photos:["images/bath-1.jpg"]
+  },
+  "hall": {
+    name:"Hallway", open:false,
+    specs:[["Storage","Closet"],["Runs","The length of the flat"]],
+    items:["Coat hooks","Shoe rack","Vacuum","Mop and broom","Iron and board"],
+    photos:["images/hall-1.jpg"]
+  }
+};
+
+const BUY = [
+  ["Bed frame",180],["Mattress",300],["Desk",120],["Desk chair",90],["Dresser",140],
+  ["Nightstand",45],["Lamp",30],["Couch",400],["Coffee table",80],["TV",220],
+  ["Rug",90],["Dining table",160],["Dining chairs",120],["Pots and pans",110],
+  ["Knives",60],["Cutlery",35],["Plates and bowls",50],["Glasses",25],["Microwave",80],
+  ["Toaster",30],["Coffee maker",45],["Vacuum",120],["Mop and broom",35],
+  ["Cleaning supplies",40],["Trash cans",25],["Shower curtain",20],["Iron",30],["Wifi router",70]
+];
+
+const BILLS = {
+  here:    [["Rent","$725"],["Water","included"],["Gas","included"],["Electricity","included"],["Internet","included"]],
+  typical: [["Rent","$725"],["Water","$28"],["Gas","$52"],["Electricity","$64"],["Internet","$35"]]
+};
+const TOTALS = { here:"$725", typical:"$904" };
+
+/* Categories for the "what is included" section.
+   free:true marks a utility, which renders in brass instead of mint. */
+const INCLUDED = [
+  { key:"utilities", label:"Utilities", free:true,
+    blurb:"All four are on, in my name, and paid for. Nothing to set up, nothing to split, no deposits.",
+    items:["Water","Gas","Electricity","Internet","Wifi router","Trash and recycling","Heat","Air conditioning"] },
+
+  { key:"cookware", label:"Cookware",
+    blurb:"Enough to actually cook, not just reheat. You do not need to bring a single pan.",
+    items:["Pots, small to large","Frying pans","Saucepans","Baking sheets","Casserole dish","Mixing bowls","Colander","Cutting boards","Chef and paring knives","Can opener","Peeler","Grater","Measuring cups","Tongs and spatulas","Wooden spoons","Whisk","Kettle","Storage containers"] },
+
+  { key:"table", label:"Dishes and cutlery",
+    blurb:"Full sets for eight, so having people over is not a problem.",
+    items:["Dinner plates","Side plates","Bowls","Mugs","Drinking glasses","Wine glasses","Forks","Knives","Spoons","Teaspoons","Serving spoons","Salt and pepper mills"] },
+
+  { key:"appliances", label:"Appliances",
+    blurb:"Everything plugged in and working on the day you arrive.",
+    items:["Gas range and oven","Refrigerator and freezer","Dishwasher","Microwave","Toaster","Coffee maker","Electric kettle","Blender","Rice cooker","Iron and board"] },
+
+  { key:"cleaning", label:"Cleaning supplies",
+    blurb:"Kept stocked under the sink. When something runs out I replace it.",
+    items:["Vacuum","Mop and bucket","Broom and dustpan","All purpose spray","Dish soap","Sponges and scrubbers","Glass cleaner","Bathroom cleaner","Paper towels","Trash bags","Trash cans","Rubber gloves","Toilet brush","Plunger"] },
+
+  { key:"bedroom", label:"Your room",
+    blurb:"Furnished and ready. Bring clothes, bedding and a laptop.",
+    items:["Bed frame","Mattress","Dresser","Desk","Desk chair","Nightstand","Desk lamp","Curtains and rod","Hangers","Full length mirror","Waste basket"] },
+
+  { key:"living", label:"Living room",
+    blurb:"Set up already, so there is somewhere to sit on night one.",
+    items:["Couch","Armchair","Coffee table","Side table","Rug","TV","Floor lamp","Bookshelf","Dining table","Dining chairs"] },
+
+  { key:"bath", label:"Bathroom",
+    blurb:"Stocked apart from your own towels and toiletries.",
+    items:["Shower curtain and liner","Bath mat","Hamper","Toilet paper","Hand soap","Storage shelf","Hair dryer"] }
+];
+
+/* ============ NOTHING TO EDIT BELOW ============ */
+
+const $ = s => document.querySelector(s);
+let current = "room-a", shot = 0;
+
+/* --- rooms --- */
+function drawShot(){
+  const r = ROOMS[current], src = r.photos[shot], holder = $("#shotHolder");
+  holder.innerHTML = "";
+  const img = new Image();
+  img.className = "shot"; img.alt = r.name;
+  img.onerror = () => holder.innerHTML =
+    '<div class="shot-empty">Put your photo at<br>' + src + '</div>';
+  img.src = src;
+  holder.appendChild(img);
+
+  $("#thumbs").innerHTML = r.photos.length > 1
+    ? r.photos.map((p,i) => '<button data-i="'+i+'" aria-current="'+(i===shot)+'"><img src="'+p+'" alt=""></button>').join("")
+    : "";
+}
+
+function selectRoom(key){
+  current = key; shot = 0;
+  const r = ROOMS[key];
+  document.querySelectorAll(".room").forEach(g => g.classList.toggle("is-selected", g.dataset.room === key));
+  $("#dName").textContent = r.name;
+  const chip = $("#dChip");
+  chip.textContent = r.open ? "Available" : "Shared space";
+  chip.className = "chip" + (r.open ? "" : " taken");
+  $("#dSpecs").innerHTML = r.specs.map(s => "<li><span>"+s[0]+"</span><span>"+s[1]+"</span></li>").join("");
+  $("#dItems").innerHTML = r.items.map(i => "<li>"+i+"</li>").join("");
+  drawShot();
+}
+
+document.querySelectorAll(".room").forEach(g => {
+  const r = ROOMS[g.dataset.room];
+  if(r && r.open) g.classList.add("is-open");
+  g.addEventListener("click", () => selectRoom(g.dataset.room));
+  g.addEventListener("keydown", e => {
+    if(e.key === "Enter" || e.key === " "){ e.preventDefault(); selectRoom(g.dataset.room); }
+  });
+});
+$("#thumbs").addEventListener("click", e => {
+  const b = e.target.closest("button");
+  if(b){ shot = +b.dataset.i; drawShot(); }
+});
+
+/* --- shopping list --- */
+const START = BUY.reduce((a,c) => a + c[1], 0);
+const crossed = new Set();
+
+$("#items").innerHTML = BUY.map((it,i) =>
+  '<li><button data-i="'+i+'" aria-pressed="false">'+it[0]+' <em>$'+it[1]+'</em></button></li>').join("");
+
+function tally(){
+  const spent = [...crossed].reduce((a,i) => a + BUY[i][1], 0);
+  const left = START - spent;
+  $("#total").textContent = "$" + left.toLocaleString();
+  $("#left").textContent = crossed.size === 0
+    ? "to furnish an empty apartment"
+    : "still left to buy";
+  $("#barFill").style.width = (left / START * 100) + "%";
+  $("#done").classList.toggle("show", crossed.size === BUY.length);
+}
+
+$("#items").addEventListener("click", e => {
+  const b = e.target.closest("button");
+  if(!b) return;
+  const i = +b.dataset.i;
+  if(crossed.has(i)) crossed.delete(i); else crossed.add(i);
+  b.setAttribute("aria-pressed", crossed.has(i));
+  tally();
+});
+
+$("#sweep").addEventListener("click", () => {
+  const all = crossed.size === BUY.length;
+  document.querySelectorAll("#items button").forEach((b,i) => {
+    if(all){ crossed.delete(i); } else { crossed.add(i); }
+    b.setAttribute("aria-pressed", !all);
+  });
+  $("#sweep").textContent = all ? "Cross off everything" : "Start over";
+  tally();
+});
+tally();
+
+/* --- bills --- */
+function setBills(mode){
+  document.querySelectorAll(".switch button").forEach(b =>
+    b.setAttribute("aria-pressed", b.dataset.mode === mode));
+  $("#bills").innerHTML =
+    BILLS[mode].map(r =>
+      '<li class="'+(r[1]==="included"?"zero":"")+'"><span>'+r[0]+'</span><span class="amt">'+r[1]+'</span></li>').join("")
+    + '<li class="total"><span>Total</span><span>'+TOTALS[mode]+'</span></li>';
+}
+document.querySelectorAll(".switch button").forEach(b =>
+  b.addEventListener("click", () => setBills(b.dataset.mode)));
+
+/* --- what is included --- */
+$("#invCount").textContent = INCLUDED.reduce((a,c) => a + c.items.length, 0);
+
+$("#tabs").innerHTML = INCLUDED.map((c,i) =>
+  '<button data-i="'+i+'" aria-pressed="'+(i===0)+'">'+c.label+' <i>'+c.items.length+'</i></button>').join("");
+
+function setCat(i){
+  const c = INCLUDED[i];
+  document.querySelectorAll("#tabs button").forEach(b =>
+    b.setAttribute("aria-pressed", +b.dataset.i === i));
+  $("#invBlurb").textContent = c.blurb;
+  $("#inv").innerHTML = c.items.map(t =>
+    '<li class="'+(c.free ? "free" : "")+'">'+t+'</li>').join("");
+}
+$("#tabs").addEventListener("click", e => {
+  const b = e.target.closest("button");
+  if(b) setCat(+b.dataset.i);
+});
+
+/* --- start --- */
+selectRoom("room-a");
+setBills("here");
+setCat(0);
+</script>
+</body>
+</html>
