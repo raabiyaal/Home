@@ -187,11 +187,15 @@ header h1 em{font-style:normal;color:var(--brass)}
 .inv li.free::before{color:var(--brass)}
 
 /* ---------- contact ---------- */
-.cta{
-  display:inline-block;margin-top:24px;background:var(--brass);color:var(--ink);
-  text-decoration:none;font-weight:500;padding:16px 32px;
+.contact-link,
+.whatsapp-link{
+  display:inline-flex;align-items:center;gap:10px;margin-top:14px;
+  background:transparent;color:var(--paper);border:1px solid var(--brass);
+  text-decoration:none;font-family:"IBM Plex Mono",monospace;font-size:.72rem;
+  letter-spacing:.12em;text-transform:uppercase;padding:10px 16px;transition:.2s;
 }
-.cta:hover{filter:brightness(1.08)}
+.contact-link:hover,
+.whatsapp-link:hover{background:var(--brass);color:var(--ink)}
 footer{padding:48px 0 76px;color:var(--line);font-size:.8rem}
 
 @media (max-width:780px){
@@ -218,6 +222,19 @@ footer{padding:48px 0 76px;color:var(--line);font-size:.8rem}
 ============================================== -->
 <div class="plan">
 <svg viewBox="0 0 1700 800" role="img" aria-label="Floor plan">
+
+<text x="-80" y="300"
+      fill="#ffffff"
+      font-size="26"
+      font-family="'IBM Plex Mono', monospace"
+      transform="rotate(-90 20 300)"
+      letter-spacing="0.04em">Patio</text>
+<text x="-300" y="1280"
+      fill="#ffffff"
+      font-size="26"
+      font-family="'IBM Plex Mono', monospace"
+      transform="rotate(-90 20 300)"
+      letter-spacing="0.04em">Entrance</text>
 
   <g class="room" data-room="kitchen" tabindex="0" role="button" aria-label="Kitchen and dining">
     <polygon points="45,135 425,135 425,670 45,670"/>
@@ -251,7 +268,7 @@ footer{padding:48px 0 76px;color:var(--line);font-size:.8rem}
   </g>
 
   <g class="room" data-room="room-a" tabindex="0" role="button" aria-label="Room A">
-    <polygon points="1025,475 1455,475 1455,770 1025,770"/>
+    <polygon points="1045,475 1435,475 1435,770 1045,770"/>
     <text class="r-name" x="1115" y="545">Room A</text>
   </g>
 
@@ -265,13 +282,14 @@ footer{padding:48px 0 76px;color:var(--line);font-size:.8rem}
     <line class="window" x1="1590" y1="143" x2="1640" y2="192"/>
     <line class="window" x1="1640" y1="224" x2="1640" y2="382"/>
     <line class="window" x1="1640" y1="420" x2="1590" y2="460"/>
-    <line class="window" x1="1455" y1="600" x2="1455" y2="700"/>
+    <line class="window" x1="1435" y1="600" x2="1435" y2="700"/>
     <line class="window" x1="500" y1="585" x2="500" y2="625"/>
     <line x1="750" y1="416" x2="810" y2="416" stroke="#ff5a5a" stroke-width="4" stroke-linecap="round"/>
     <line x1="680" y1="473" x2="730" y2="473" stroke="#ff5a5a" stroke-width="4" stroke-linecap="round"/>
     <line x1="960" y1="473" x2="1020" y2="473" stroke="#ff5a5a" stroke-width="4" stroke-linecap="round"/>
     <line x1="1070" y1="360" x2="1130" y2="360" stroke="#ff5a5a" stroke-width="4" stroke-linecap="round"/>
     <line x1="1070" y1="473" x2="1130" y2="473" stroke="#ff5a5a" stroke-width="4" stroke-linecap="round"/>
+    <line x1="48" y1="330" x2="48" y2="390" stroke="#ff5a5a" stroke-width="4" stroke-linecap="round"/>
 
   </g>
 </svg>
@@ -345,7 +363,8 @@ footer{padding:48px 0 76px;color:var(--line);font-size:.8rem}
   <p class="eyebrow">Next step</p>
   <h2>Come see it.</h2>
   <p class="lede">Tell me which room and when you would move in. I answer within a day and I can usually show it the same week.</p>
-  <a class="cta" href="mailto:you@example.com?subject=Room%20in%20Hyde%20Park">Email me</a>
+  <a class="contact-link" href="mailto:rishaq@uchicago.edu?subject=Room%20in%20Hyde%20Park">Email me at rishaq@uchicago.edu</a>
+  <a class="whatsapp-link" href="https://wa.me/7736907628" target="_blank" rel="noreferrer">WhatsApp me at 773 690 7628</a>
 </section>
 
 <footer class="mono">Hyde Park, Chicago &middot; Updated July 2026</footer>
@@ -433,7 +452,7 @@ const BUY = [
 
   /* appliances */
   ["Microwave",50],["Blender",30],["Juicer",40],["Air fryer",60],
-  ["Rice cooker",25],["Iron and board",30],
+  ["Rice cooker",25],["Iron and board",30],["Mini Fridge", 80],["Food Processor", 40],["Hand Blender", 20],
 
   /* cleaning */
   ["Vacuum",60],["Mop and bucket",20],["Broom and dustpan",12],
@@ -448,46 +467,45 @@ const BUY = [
 ];
 
 const BILLS = {
-  here:    [["Rent","$750"],["Water","included"],["Gas","included"],["Electricity","included"],["Internet","included"]],
-  typical: [["Rent","$750"],["Water","$28"],["Gas","$52"],["Electricity","$64"],["Internet","$35"]]
+  here:    [["Rent","$750"],["Water","included"],["Gas","included"],["Electricity","included"],["Internet","included"],["Cleaning Supplies","included"]],
+  typical: [["Rent","$750"],["Water","$28"],["Gas","$32"],["Electricity","$44"],["Internet","$35"],["Cleaning Supplies", "$40"],["Miscellaneous", "$30"]]
 };
-const TOTALS = { here:"$750", typical:"$929" };
+const TOTALS = { here:"$750", typical:"$959" };
 
 /* free:true marks a utility, which renders in brass instead of green */
 const INCLUDED = [
   { key:"utilities", label:"Utilities", free:true,
-    blurb:"All four are on, in my name, and paid for. Nothing to set up, nothing to split, no deposits.",
+    blurb:"All are on, in my name, and paid for. Nothing to set up, nothing to split, no deposits.",
     items:["Water","Gas","Electricity","Internet","Trash and recycling","Heat","Air conditioning"] },
 
   { key:"cookware", label:"Cookware",
     blurb:"Enough to actually cook, not just reheat. You do not need to bring a single pan.",
-    items:["Pots, small to large","Frying pans","Saucepans","Baking sheets","Casserole dish","Mixing bowls","Colander","Cutting boards","Chef and paring knives","Can opener","Peeler","Grater","Measuring cups","Tongs and spatulas","Wooden spoons","Whisk","Kettle","Storage containers"] },
+    items:["Pots, small to large","Frying pans","Mixing bowls","Cutting boards","Chef and paring knives","Can opener","Tongs and spatulas","Wooden spoons","Whisk","Storage containers","Dish rack","Oven mitts","Kitchen scissors"] },
 
   { key:"table", label:"Dishes and cutlery",
     blurb:"Full sets for eight, so having people over is not a problem.",
-    items:["Dinner plates","Side plates","Bowls","Mugs","Drinking glasses","Wine glasses","Forks","Knives","Spoons","Teaspoons","Serving spoons","Salt and pepper mills"] },
+    items:["Dinner plates","Bowls","Mugs","Drinking glasses","Forks","Knives","Spoons","Serving dishes","Ice trays","Dining table","Dining chairs"] },
 
   { key:"appliances", label:"Appliances",
     blurb:"Everything plugged in and working on the day you arrive.",
-    items:["Gas range and oven","Refrigerator and freezer","Dishwasher","Microwave","Toaster","Coffee maker","Electric kettle","Blender","Rice cooker","Iron and board"] },
+    items:["Gas range and oven","Refrigerator and freezer","Microwave","Air fryer","Blender","Hand blender","Mini Fridge","Food processor","Juicer","Rice cooker","Iron and board"] },
 
   { key:"cleaning", label:"Cleaning supplies",
     blurb:"Kept stocked under the sink. When something runs out I replace it.",
-    items:["Vacuum","Mop and bucket","Broom and dustpan","All purpose spray","Dish soap","Sponges and scrubbers","Glass cleaner","Bathroom cleaner","Paper towels","Trash bags","Trash cans","Rubber gloves","Toilet brush","Plunger"] },
+    items:["Vacuum","Mop and bucket","Broom and dustpan","All purpose spray","Dish soap","Sponges and scrubbers","Bathroom cleaner","Paper towels","Trash bags","Trash cans","Rubber gloves","Toilet brush"] },
 
   { key:"bedroom", label:"Your room",
-    blurb:"Furnished and ready. Bring clothes, bedding and a laptop.",
-    items:["Bed frame","Mattress","Dresser","Desk","Desk chair","Nightstand","Desk lamp","Curtains and rod","Hangers","Full length mirror","Waste basket"] },
+    blurb:"Furnished and ready. Bring your clothes and a laptop.",
+    items:["Bed frame","Mattress","Bedding and pillows","Dresser","Standing desk","Desk chair","Monitor you can plug into","Floor lamp","Full length mirror","Blinds","Hangers","Waste basket","Window AC unit","Ceiling fan","Space heater"] },
 
   { key:"living", label:"Living room",
     blurb:"Set up already, so there is somewhere to sit on night one.",
-    items:["Sofa","Armchairs","Coffee table","Side table","Rug","TV","Floor lamps","Bookshelf","Dining table","Dining chairs"] },
+    items:["Three sofas","Two armchairs","Chaise lounge","Coffee table","Media console","Side tables","Large rug","TV","Globe floor lamps","Table lamps","Board games","Bay windows","Ceiling fan","Tower fan"] },
 
   { key:"bath", label:"Bathroom",
     blurb:"Stocked apart from your own towels and toiletries.",
-    items:["Shower curtain and liner","Bath mat","Hamper","Toilet paper","Hand soap","Storage shelf","Hair dryer"] }
+    items:["Shower curtain and liner","Bath mat","Toilet paper","Hand soap","Toilet brush"] }
 ];
-
 /* ============ NOTHING TO EDIT BELOW ============ */
 
 const $ = s => document.querySelector(s);
