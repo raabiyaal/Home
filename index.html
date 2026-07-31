@@ -65,7 +65,7 @@ header h1 em{font-style:normal;color:var(--brass)}
 .plan-hint{font-family:"IBM Plex Mono",monospace;font-size:.76rem;color:var(--line);margin:14px 0 0}
 
 /* ---------- gallery ---------- */
-.detail{display:grid;grid-template-columns:1.15fr 1fr;gap:36px;align-items:start}
+.detail{display:grid;grid-template-columns:.88fr 1fr;gap:40px;align-items:start}
 .gal{position:relative}
 .track{
   display:flex;overflow-x:auto;scroll-snap-type:x mandatory;
@@ -73,7 +73,7 @@ header h1 em{font-style:normal;color:var(--brass)}
   scrollbar-width:none;background:var(--panel);
 }
 .track::-webkit-scrollbar{display:none}
-.slide{flex:0 0 100%;scroll-snap-align:center;aspect-ratio:4/3}
+.slide{flex:0 0 100%;scroll-snap-align:center;aspect-ratio:3/4}
 .slide img,.slide video{width:100%;height:100%;object-fit:cover;display:block;background:var(--panel)}
 .slide .empty{
   width:100%;height:100%;border:1px dashed rgba(60,98,94,.9);
@@ -96,7 +96,7 @@ header h1 em{font-style:normal;color:var(--brass)}
 .thumbs{display:flex;gap:8px;margin-top:10px;overflow-x:auto;scrollbar-width:none}
 .thumbs::-webkit-scrollbar{display:none}
 .thumbs button{
-  flex:0 0 auto;width:60px;height:46px;padding:0;
+  flex:0 0 auto;width:48px;height:64px;padding:0;
   border:1px solid rgba(60,98,94,.8);background:var(--panel);cursor:pointer;overflow:hidden;
 }
 .thumbs button[aria-current="true"]{border-color:var(--brass)}
@@ -212,74 +212,65 @@ footer{padding:48px 0 76px;color:var(--line);font-size:.8rem}
 </header>
 
 <!-- ============ FLOOR PLAN ============
-     Traced from the real layout. Three blocks joined by a hall.
-     Coordinate space is 1700 x 800. To move a wall, edit the
-     polygon points and the matching label x/y underneath it.
+     Traced from the real layout. Coordinate space is 1700 x 800.
+     Most windows sit on the angled corners, not the flat walls.
+     To move a wall, edit the polygon points and the label under it.
 ============================================== -->
 <div class="plan">
 <svg viewBox="0 0 1700 800" role="img" aria-label="Floor plan">
 
-  <g class="room" data-room="kitchen" tabindex="0" role="button" aria-label="Kitchen">
-    <polygon points="45,135 425,135 425,415 45,415"/>
-    <text class="r-name" x="80" y="190">Kitchen</text>
-    <text class="r-tag" x="80" y="222">shared</text>
-  </g>
-
-  <g class="room" data-room="dining" tabindex="0" role="button" aria-label="Dining room">
-    <polygon points="45,415 425,415 425,670 45,670"/>
-    <text class="r-name" x="80" y="470">Dining</text>
-    <text class="r-tag" x="80" y="502">seats eight</text>
+  <g class="room" data-room="kitchen" tabindex="0" role="button" aria-label="Kitchen and dining">
+    <polygon points="45,135 425,135 425,670 45,670"/>
+    <text class="r-name" x="80" y="200">Kitchen</text>
+    <text class="r-name" x="80" y="234">and dining</text>
   </g>
 
   <g class="room" data-room="room-a" tabindex="0" role="button" aria-label="Room A">
     <polygon points="425,135 470,80 825,80 825,415 425,415"/>
-    <text class="r-name" x="500" y="190">Room A</text>
-    <text class="r-tag" x="500" y="222">largest</text>
+    <text class="r-name" x="505" y="200">Room A</text>
   </g>
 
   <g class="room" data-room="room-b" tabindex="0" role="button" aria-label="Room B">
     <polygon points="825,80 1080,80 1125,135 1125,360 980,360 980,415 825,415"/>
-    <text class="r-name" x="855" y="140">Room B</text>
-    <text class="r-tag" x="855" y="172">bright</text>
+    <text class="r-name" x="855" y="150">Room B</text>
   </g>
 
   <g class="room" data-room="living" tabindex="0" role="button" aria-label="Living room">
     <polygon points="1140,135 1580,135 1645,195 1645,340 1580,410 1215,410 1140,340"/>
-    <text class="r-name" x="1185" y="195">Living</text>
-    <text class="r-tag" x="1185" y="227">bay windows</text>
+    <text class="r-name" x="1190" y="205">Living</text>
   </g>
 
   <g class="room" data-room="hall" tabindex="0" role="button" aria-label="Hallway">
-    <polygon points="425,415 1250,415 1250,530 1140,530 1140,475 425,475"/>
-    <text class="r-tag" x="460" y="455">hall</text>
+    <polygon points="425,415 980,415 980,360 1125,360 1125,415 1250,415 1250,530 1140,530 1140,475 425,475"/>
+    <text class="r-name" x="470" y="458">Hall</text>
   </g>
 
   <g class="room" data-room="bath" tabindex="0" role="button" aria-label="Bathroom">
     <polygon points="500,480 745,480 745,700 500,700"/>
-    <text class="r-name" x="530" y="535">Bath</text>
-    <text class="r-tag" x="530" y="567">tub and shower</text>
+    <text class="r-name" x="535" y="545">Bath</text>
   </g>
 
   <g class="room" data-room="room-c" tabindex="0" role="button" aria-label="Room C">
-    <polygon points="1165,535 1470,535 1470,745 1165,745"/>
-    <text class="r-name" x="1195" y="595">Room C</text>
-    <text class="r-tag" x="1195" y="627">off the living room</text>
+    <polygon points="1140,535 1520,535 1520,770 1140,770"/>
+    <text class="r-name" x="1180" y="605">Room C</text>
   </g>
 
-  <!-- windows on the outside walls -->
+  <!-- windows -->
   <g stroke-linecap="round">
-    <line class="window" x1="45" y1="165" x2="45" y2="240"/>
-    <line class="window" x1="45" y1="500" x2="45" y2="585"/>
+    <line class="window" x1="45" y1="170" x2="45" y2="240"/>
+    <line class="window" x1="45" y1="520" x2="45" y2="595"/>
+    <line class="window" x1="433" y1="128" x2="463" y2="89"/>
     <line class="window" x1="640" y1="80" x2="740" y2="80"/>
-    <line class="window" x1="890" y1="80" x2="990" y2="80"/>
-    <line class="window" x1="1300" y1="135" x2="1450" y2="135"/>
-    <line class="window" x1="1645" y1="215" x2="1645" y2="320"/>
-    <line class="window" x1="1470" y1="580" x2="1470" y2="680"/>
-    <line class="window" x1="500" y1="540" x2="500" y2="620"/>
+    <line class="window" x1="1087" y1="87" x2="1118" y2="128"/>
+    <line class="window" x1="1588" y1="143" x2="1637" y2="187"/>
+    <line class="window" x1="1645" y1="210" x2="1645" y2="325"/>
+    <line class="window" x1="1637" y1="348" x2="1588" y2="402"/>
+    <line class="window" x1="1520" y1="600" x2="1520" y2="690"/>
+    <line class="window" x1="500" y1="545" x2="500" y2="625"/>
   </g>
 </svg>
 </div>
-<p class="plan-hint">Tap any room to look inside and see what comes with it.</p>
+<p class="plan-hint">Tap any room to look inside. The rooms outlined in green are the ones available.</p>
 
 <!-- ============ ROOM DETAIL ============ -->
 <section>
@@ -380,7 +371,7 @@ const ROOMS = {
       "images/room-c-2.jpg",
       "images/room-c-3.jpg",
       "images/room-c-4.jpg",
-      "images/room-c-tour.mp4"
+      "images/room-vid.mp4"
     ]
   },
   "living": {
@@ -390,16 +381,10 @@ const ROOMS = {
     photos:["images/living-1.jpg","images/living-2.jpg"]
   },
   "kitchen": {
-    name:"Kitchen", open:false,
-    specs:[["Shared","Yes"],["Range","Gas"],["Counter","Full run"]],
-    items:["Full cookware set","Knives and boards","Cutlery for eight","Plates, bowls, glasses","Microwave","Toaster","Coffee maker","Kettle","Rice cooker","Blender"],
-    photos:["images/kitchen-1.jpg"]
-  },
-  "dining": {
-    name:"Dining room", open:false,
-    specs:[["Shared","Yes"],["Table","Seats eight"],["Storage","Sideboard"]],
-    items:["Dining table","Eight chairs","Sideboard","Serving dishes"],
-    photos:["images/dining-1.jpg"]
+    name:"Kitchen and dining", open:false,
+    specs:[["Shared","Yes"],["Range","Gas"],["Table","Seats eight"],["Counter","Full run"]],
+    items:["Full cookware set","Knives and boards","Cutlery for eight","Plates, bowls, glasses","Microwave","Toaster","Coffee maker","Kettle","Rice cooker","Blender","Dining table","Eight chairs","Sideboard"],
+    photos:["images/kitchen-1.jpg","images/kitchen-2.jpg","images/dining-1.jpg"]
   },
   "bath": {
     name:"Bathroom", open:false,
