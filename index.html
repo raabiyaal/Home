@@ -227,7 +227,7 @@ footer{padding:48px 0 76px;color:var(--line);font-size:.8rem}
 
   <g class="room" data-room="room-a" tabindex="0" role="button" aria-label="Room A">
     <polygon points="425,135 470,80 825,80 825,415 425,415"/>
-    <text class="r-name" x="505" y="200">Room A</text>
+    <text class="r-name" x="505" y="200">Room C</text>
   </g>
 
   <g class="room" data-room="room-b" tabindex="0" role="button" aria-label="Room B">
@@ -236,7 +236,7 @@ footer{padding:48px 0 76px;color:var(--line);font-size:.8rem}
   </g>
 
   <g class="room" data-room="living" tabindex="0" role="button" aria-label="Living room">
-    <polygon points="1140,135 1580,135 1645,195 1645,340 1580,410 1215,410 1140,340"/>
+    <polygon points="1140,135 1580,135 1645,195 1645,340 1580,410 1140,340"/>
     <text class="r-name" x="1190" y="205">Living</text>
   </g>
 
@@ -251,8 +251,8 @@ footer{padding:48px 0 76px;color:var(--line);font-size:.8rem}
   </g>
 
   <g class="room" data-room="room-c" tabindex="0" role="button" aria-label="Room C">
-    <polygon points="1140,535 1520,535 1520,770 1140,770"/>
-    <text class="r-name" x="1180" y="605">Room C</text>
+    <polygon points="1140,475 1520,475 1520,770 1140,770"/>
+    <text class="r-name" x="1180" y="545">Room A</text>
   </g>
 
   <!-- windows -->
@@ -351,7 +351,7 @@ footer{padding:48px 0 76px;color:var(--line);font-size:.8rem}
 /* photos can be .jpg .png .gif or .mp4 .webm, mixed in any order */
 const ROOMS = {
   "room-a": {
-    name:"Room A", open:true,
+    name:"Room C", open:true,
     specs:[["Rent","$725 / mo"],["Size","Largest room"],["Windows","Two, facing front"],["Available","Sept 1"]],
     items:["Queen bed and mattress","Dresser","Desk","Desk chair","Nightstand","Lamp","Curtains","Hangers"],
     photos:["images/room-a-1.jpg","images/room-a-2.jpg","images/room-a-3.jpg"]
@@ -363,7 +363,7 @@ const ROOMS = {
     photos:["images/room-b-1.jpg","images/room-b-2.jpg"]
   },
   "room-c": {
-    name:"Room C", open:false,
+    name:"Room A", open:false,
     specs:[["Status","Mine"],["Off","The living room"]],
     items:["This is my room, so you know who you are living with"],
     photos:[
