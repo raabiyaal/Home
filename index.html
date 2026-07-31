@@ -225,23 +225,23 @@ footer{padding:48px 0 76px;color:var(--line);font-size:.8rem}
     <text class="r-name" x="80" y="234">and dining</text>
   </g>
 
-  <g class="room" data-room="room-a" tabindex="0" role="button" aria-label="Room A">
+  <g class="room" data-room="room-c" tabindex="0" role="button" aria-label="Room C">
     <polygon points="425,135 470,80 825,80 825,415 425,415"/>
     <text class="r-name" x="505" y="200">Room C</text>
   </g>
 
   <g class="room" data-room="room-b" tabindex="0" role="button" aria-label="Room B">
-    <polygon points="825,80 1080,80 1125,135 1125,360 980,360 980,415 825,415"/>
+    <polygon points="825,80 1080,80 1140,135 1140,360 980,360 980,415 825,415"/>
     <text class="r-name" x="855" y="150">Room B</text>
   </g>
 
   <g class="room" data-room="living" tabindex="0" role="button" aria-label="Living room">
-    <polygon points="1140,135 1580,135 1645,195 1645,340 1580,410 1140,340"/>
+    <polygon points="1140,135 1580,135 1645,195 1645,420 1570,470 1140,470"/>
     <text class="r-name" x="1190" y="205">Living</text>
   </g>
 
   <g class="room" data-room="hall" tabindex="0" role="button" aria-label="Hallway">
-    <polygon points="425,415 980,415 980,360 1125,360 1125,415 1250,415 1250,530 1140,530 1140,475 425,475"/>
+    <polygon points="425,415 980,415 980,360 1140,360 1140,415 1140,475 425,475"/>
     <text class="r-name" x="470" y="458">Hall</text>
   </g>
 
@@ -250,9 +250,9 @@ footer{padding:48px 0 76px;color:var(--line);font-size:.8rem}
     <text class="r-name" x="535" y="545">Bath</text>
   </g>
 
-  <g class="room" data-room="room-c" tabindex="0" role="button" aria-label="Room C">
-    <polygon points="1140,475 1520,475 1520,770 1140,770"/>
-    <text class="r-name" x="1180" y="545">Room A</text>
+  <g class="room" data-room="room-a" tabindex="0" role="button" aria-label="Room A">
+    <polygon points="1025,475 1455,475 1455,770 1025,770"/>
+    <text class="r-name" x="1115" y="545">Room A</text>
   </g>
 
   <!-- windows -->
@@ -261,12 +261,18 @@ footer{padding:48px 0 76px;color:var(--line);font-size:.8rem}
     <line class="window" x1="45" y1="520" x2="45" y2="595"/>
     <line class="window" x1="433" y1="128" x2="463" y2="89"/>
     <line class="window" x1="640" y1="80" x2="740" y2="80"/>
-    <line class="window" x1="1087" y1="87" x2="1118" y2="128"/>
-    <line class="window" x1="1588" y1="143" x2="1637" y2="187"/>
-    <line class="window" x1="1645" y1="210" x2="1645" y2="325"/>
-    <line class="window" x1="1637" y1="348" x2="1588" y2="402"/>
-    <line class="window" x1="1520" y1="600" x2="1520" y2="690"/>
-    <line class="window" x1="500" y1="545" x2="500" y2="625"/>
+    <line class="window" x1="1087" y1="87" x2="1134" y2="128"/>
+    <line class="window" x1="1590" y1="143" x2="1640" y2="192"/>
+    <line class="window" x1="1640" y1="224" x2="1640" y2="382"/>
+    <line class="window" x1="1640" y1="420" x2="1590" y2="460"/>
+    <line class="window" x1="1455" y1="600" x2="1455" y2="700"/>
+    <line class="window" x1="500" y1="585" x2="500" y2="625"/>
+    <line x1="750" y1="416" x2="810" y2="416" stroke="#ff5a5a" stroke-width="4" stroke-linecap="round"/>
+    <line x1="680" y1="473" x2="730" y2="473" stroke="#ff5a5a" stroke-width="4" stroke-linecap="round"/>
+    <line x1="960" y1="473" x2="1020" y2="473" stroke="#ff5a5a" stroke-width="4" stroke-linecap="round"/>
+    <line x1="1070" y1="360" x2="1130" y2="360" stroke="#ff5a5a" stroke-width="4" stroke-linecap="round"/>
+    <line x1="1070" y1="473" x2="1130" y2="473" stroke="#ff5a5a" stroke-width="4" stroke-linecap="round"/>
+
   </g>
 </svg>
 </div>
@@ -350,21 +356,9 @@ footer{padding:48px 0 76px;color:var(--line);font-size:.8rem}
 
 /* photos can be .jpg .png .gif or .mp4 .webm, mixed in any order */
 const ROOMS = {
-  "room-a": {
-    name:"Room C", open:true,
-    specs:[["Rent","$725 / mo"],["Size","Largest room"],["Windows","Two, facing front"],["Available","Sept 1"]],
-    items:["Queen bed and mattress","Dresser","Desk","Desk chair","Nightstand","Lamp","Curtains","Hangers"],
-    photos:["images/room-a-1.jpg","images/room-a-2.jpg","images/room-a-3.jpg"]
-  },
-  "room-b": {
-    name:"Room B", open:true,
-    specs:[["Rent","$690 / mo"],["Size","Second largest"],["Windows","Front facing"],["Available","Now"]],
-    items:["Full bed and mattress","Wardrobe","Desk","Desk chair","Nightstand","Lamp","Curtains","Hangers"],
-    photos:["images/room-b-1.jpg","images/room-b-2.jpg"]
-  },
   "room-c": {
-    name:"Room A", open:false,
-    specs:[["Status","Mine"],["Off","The living room"]],
+    name:"Room C", open:false, personal:true,
+    specs:[["Status","My personal room"]],
     items:["This is my room, so you know who you are living with"],
     photos:[
       "images/room-c-1.jpg",
@@ -374,10 +368,22 @@ const ROOMS = {
       "images/room-vid.mp4"
     ]
   },
+  "room-b": {
+    name:"Room B", open:true,
+    specs:[["Rent","$750 / mo"],["Size","Full bed, desk, dresser & more"],["Windows","North facing"],["Available","August 7 Onwards"]],
+    items:["Full bed and mattress","Wardrobe","Desk","Desk chair","Desk monitor","Nightstand","Lamp","Hangers","AC Unit","Ceiling fan with light","Portable fan","TV","Trashcan","Small plant","Bedsheet & pillows","Weighing scale" ],
+    photos:["images/room-b-1.jpg","images/room-b-2.jpg"]
+  },
+  "room-a": {
+    name:"Room A", open:true, taken:true,
+    specs:[["Rent","$750 / mo"],["Size","Queen bed, still room to walk"],["Windows","Oversized north facing"],["Available","December Onwards"]],
+    items:["Queen bed and mattress","Dresser","Desk","Desk chair","29 Curved screen", "Lamps x2","AC Unit","Ceiling fan with light","Full length mirror","Area rug", "Laptop stand","Beautiful plant","Smart TV 43","Large painting","Bedsheet & pillows"],
+    photos:["images/room-a-1.jpg","images/room-a-2.jpg","images/room-a-3.jpg"]
+  },
   "living": {
     name:"Living room", open:false,
-    specs:[["Shared","Yes"],["Windows","Bay, three sides"],["Seats","Six comfortably"]],
-    items:["Sofa","Two armchairs","Coffee table","Large rug","TV","Sideboard","Floor lamps"],
+    specs:[["Shared","Yes"],["Windows","Bay, three sides"],["Seats","Ten comfortably"]],
+    items:["75 inch smart TV","Media console","Three sofas","Two teal armchairs","Chaise lounge","Marble coffee table","Large Persian rug","Bay window with three windows","Ceiling fan with light","Three globe floor lamps","Two table lamps","Side tables","Board games","Three landscape paintings","AC unit","Tower fan","Cushions and blankets","Plants"],
     photos:["images/living-1.jpg","images/living-2.jpg"]
   },
   "kitchen": {
@@ -401,25 +407,57 @@ const ROOMS = {
 };
 
 const BUY = [
-  ["Bed frame",180],["Mattress",300],["Desk",120],["Desk chair",90],["Dresser",140],
-  ["Nightstand",45],["Lamp",30],["Couch",400],["Coffee table",80],["TV",220],
-  ["Rug",90],["Dining table",160],["Dining chairs",120],["Pots and pans",110],
-  ["Knives",60],["Cutlery",35],["Plates and bowls",50],["Glasses",25],["Microwave",80],
-  ["Toaster",30],["Coffee maker",45],["Vacuum",120],["Mop and broom",35],
-  ["Cleaning supplies",40],["Trash cans",25],["Shower curtain",20],["Iron",30],["Wifi router",70]
+  /* bedroom */
+  ["Bed frame",120],["Mattress",200],["Bedding and pillows",60],["Dresser",100],
+  ["Standing desk",170],["Desk chair",60],["Monitor",120],
+  ["Full length mirror",25],["Floor lamp",25],["Blinds",60],
+  ["Waste basket",10],["Hangers",12],
+
+  /* living room */
+  ["Sofa",280],["Second sofa",240],["Two armchairs",200],
+  ["Chaise lounge",170],["Coffee table",55],["Media console",100],
+  ["Side tables",50],["Large rug",60],["TV",450],
+  ["Globe floor lamps",80],["Table lamps",45],["Board games",50],
+
+  /* heating and cooling */
+  ["Window AC units",400],["Tower fan",45],["Space heater",35],
+
+  /* cooking */
+  ["Pots and pans",75],["Mixing bowls",20],["Cutting boards",15],["Knives",40],
+  ["Can opener",6],["Whisk",5],["Tongs and spatulas",15],
+  ["Food storage containers",25],["Dish rack",20],["Oven mitts",10],["Ice trays",5],
+
+  /* dishes and table */
+  ["Plates",32],["Bowls",20],["Mugs",15],["Drinking glasses",15],["Cutlery",25],
+  ["Serving dishes",20],["Dining table",110],["Dining chairs",80],
+
+  /* appliances */
+  ["Microwave",50],["Blender",30],["Juicer",40],["Air fryer",60],
+  ["Rice cooker",25],["Iron and board",30],
+
+  /* cleaning */
+  ["Vacuum",60],["Mop and bucket",20],["Broom and dustpan",12],
+  ["All purpose spray",5],["Dish soap",4],["Sponges",4],["Bathroom cleaner",5],
+  ["Paper towels",8],["Trash bags",10],["Trash cans",15],["Rubber gloves",4],
+
+  /* bathroom */
+  ["Shower curtain and liner",16],["Bath mat",12],["Toilet brush",6],["Toilet paper",10],
+
+  /* other */
+  ["Extension cords",20],["Doormat",12]
 ];
 
 const BILLS = {
-  here:    [["Rent","$725"],["Water","included"],["Gas","included"],["Electricity","included"],["Internet","included"]],
-  typical: [["Rent","$725"],["Water","$28"],["Gas","$52"],["Electricity","$64"],["Internet","$35"]]
+  here:    [["Rent","$750"],["Water","included"],["Gas","included"],["Electricity","included"],["Internet","included"]],
+  typical: [["Rent","$750"],["Water","$28"],["Gas","$52"],["Electricity","$64"],["Internet","$35"]]
 };
-const TOTALS = { here:"$725", typical:"$904" };
+const TOTALS = { here:"$750", typical:"$929" };
 
 /* free:true marks a utility, which renders in brass instead of green */
 const INCLUDED = [
   { key:"utilities", label:"Utilities", free:true,
     blurb:"All four are on, in my name, and paid for. Nothing to set up, nothing to split, no deposits.",
-    items:["Water","Gas","Electricity","Internet","Wifi router","Trash and recycling","Heat","Air conditioning"] },
+    items:["Water","Gas","Electricity","Internet","Trash and recycling","Heat","Air conditioning"] },
 
   { key:"cookware", label:"Cookware",
     blurb:"Enough to actually cook, not just reheat. You do not need to bring a single pan.",
@@ -528,7 +566,10 @@ function selectRoom(key){
   document.querySelectorAll(".room").forEach(g => g.classList.toggle("is-selected", g.dataset.room === key));
   $("#dName").textContent = r.name;
   const chip = $("#dChip");
-  chip.textContent = r.open ? "Available" : "Shared space";
+  chip.textContent = r.open ? "Available"
+    : r.personal ? "My room"
+    : r.taken ? "Not available"
+    : "Shared space";
   chip.className = "chip" + (r.open ? "" : " taken");
   $("#dSpecs").innerHTML = r.specs.map(s => "<li><span>"+s[0]+"</span><span>"+s[1]+"</span></li>").join("");
   $("#dItems").innerHTML = r.items.map(i => "<li>"+i+"</li>").join("");
@@ -614,7 +655,7 @@ $("#tabs").addEventListener("click", e => {
 });
 
 /* --- start --- */
-selectRoom("room-a");
+selectRoom("room-b");
 setBills("here");
 setCat(0);
 </script>
