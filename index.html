@@ -51,8 +51,7 @@ header h1 em{font-style:normal;color:var(--brass)}
 /* ---------- floor plan ---------- */
 .plan{margin-top:40px}
 .plan svg{width:100%;height:auto;display:block}
-.wall{fill:none;stroke:var(--line);stroke-width:3}
-.window{stroke:var(--brass);stroke-width:5;stroke-linecap:round;opacity:.8}
+.window{stroke:var(--brass);stroke-width:7;stroke-linecap:round;opacity:.85}
 .room{cursor:pointer}
 .room polygon{fill:rgba(60,98,94,.18);stroke:rgba(60,98,94,.7);stroke-width:2;transition:.22s}
 .room:hover polygon{fill:rgba(201,164,92,.14);stroke:var(--brass)}
@@ -65,22 +64,49 @@ header h1 em{font-style:normal;color:var(--brass)}
 .room:focus-visible polygon{stroke:var(--paper);stroke-width:4}
 .plan-hint{font-family:"IBM Plex Mono",monospace;font-size:.76rem;color:var(--line);margin:14px 0 0}
 
-/* ---------- room detail ---------- */
+/* ---------- gallery ---------- */
 .detail{display:grid;grid-template-columns:1.15fr 1fr;gap:36px;align-items:start}
-.shot{width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--panel);display:block}
-.shot-empty{
-  width:100%;aspect-ratio:4/3;border:1px dashed rgba(60,98,94,.9);
+.gal{position:relative}
+.track{
+  display:flex;overflow-x:auto;scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;background:var(--panel);
+}
+.track::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100%;scroll-snap-align:center;aspect-ratio:4/3}
+.slide img,.slide video{width:100%;height:100%;object-fit:cover;display:block;background:var(--panel)}
+.slide .empty{
+  width:100%;height:100%;border:1px dashed rgba(60,98,94,.9);
   display:flex;align-items:center;justify-content:center;text-align:center;
   font-family:"IBM Plex Mono",monospace;font-size:.78rem;color:var(--line);padding:24px;
 }
-.thumbs{display:flex;gap:8px;margin-top:10px}
+.nav{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:42px;height:42px;border:none;cursor:pointer;
+  background:rgba(12,36,34,.72);color:var(--paper);font-size:1.1rem;line-height:1;
+}
+.nav:hover{background:var(--brass);color:var(--ink)}
+.nav.prev{left:10px}
+.nav.next{right:10px}
+.counter{
+  position:absolute;right:10px;bottom:10px;
+  font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.1em;
+  background:rgba(12,36,34,.72);padding:5px 10px;color:var(--paper);
+}
+.thumbs{display:flex;gap:8px;margin-top:10px;overflow-x:auto;scrollbar-width:none}
+.thumbs::-webkit-scrollbar{display:none}
 .thumbs button{
-  width:54px;height:42px;padding:0;border:1px solid rgba(60,98,94,.8);
-  background:var(--panel);cursor:pointer;overflow:hidden;
+  flex:0 0 auto;width:60px;height:46px;padding:0;
+  border:1px solid rgba(60,98,94,.8);background:var(--panel);cursor:pointer;overflow:hidden;
 }
 .thumbs button[aria-current="true"]{border-color:var(--brass)}
 .thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+.thumbs .vthumb{
+  display:flex;align-items:center;justify-content:center;
+  width:100%;height:100%;color:var(--brass);font-size:.8rem;
+}
 
+/* ---------- room detail ---------- */
 .chip{
   display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.7rem;
   letter-spacing:.14em;text-transform:uppercase;padding:5px 11px;border-radius:99px;
@@ -237,7 +263,7 @@ footer{padding:48px 0 76px;color:var(--line);font-size:.8rem}
   <g class="room" data-room="room-c" tabindex="0" role="button" aria-label="Room C">
     <polygon points="1165,535 1470,535 1470,745 1165,745"/>
     <text class="r-name" x="1195" y="595">Room C</text>
-    <text class="r-tag" x="1195" y="627">taken</text>
+    <text class="r-tag" x="1195" y="627">off the living room</text>
   </g>
 
   <!-- windows on the outside walls -->
@@ -260,7 +286,12 @@ footer{padding:48px 0 76px;color:var(--line);font-size:.8rem}
   <p class="eyebrow">Inside</p>
   <div class="detail">
     <div>
-      <div id="shotHolder"></div>
+      <div class="gal">
+        <div class="track" id="track" tabindex="0" aria-label="Room photos"></div>
+        <button class="nav prev" id="prev" aria-label="Previous photo">&#8249;</button>
+        <button class="nav next" id="next" aria-label="Next photo">&#8250;</button>
+        <div class="counter" id="counter"></div>
+      </div>
       <div class="thumbs" id="thumbs"></div>
     </div>
     <div>
@@ -326,12 +357,13 @@ footer{padding:48px 0 76px;color:var(--line);font-size:.8rem}
 <script>
 /* ============ EDIT EVERYTHING IN THIS BLOCK ============ */
 
+/* photos can be .jpg .png .gif or .mp4 .webm, mixed in any order */
 const ROOMS = {
   "room-a": {
     name:"Room A", open:true,
     specs:[["Rent","$725 / mo"],["Size","Largest room"],["Windows","Two, facing front"],["Available","Sept 1"]],
     items:["Queen bed and mattress","Dresser","Desk","Desk chair","Nightstand","Lamp","Curtains","Hangers"],
-    photos:["images/room-a-1.jpg","images/room-a-2.jpg","images/room-a-3.gif"]
+    photos:["images/room-a-1.jpg","images/room-a-2.jpg","images/room-a-3.jpg"]
   },
   "room-b": {
     name:"Room B", open:true,
@@ -343,7 +375,13 @@ const ROOMS = {
     name:"Room C", open:false,
     specs:[["Status","Mine"],["Off","The living room"]],
     items:["This is my room, so you know who you are living with"],
-    photos:["images/room-c-1.jpg"]
+    photos:[
+      "images/room-c-1.jpg",
+      "images/room-c-2.jpg",
+      "images/room-c-3.jpg",
+      "images/room-c-4.jpg",
+      "images/room-c-tour.mp4"
+    ]
   },
   "living": {
     name:"Living room", open:false,
@@ -353,14 +391,14 @@ const ROOMS = {
   },
   "kitchen": {
     name:"Kitchen", open:false,
-    specs:[["Shared","Yes"],["Range","Gas"],["Counter","Full run, two sinks area"]],
+    specs:[["Shared","Yes"],["Range","Gas"],["Counter","Full run"]],
     items:["Full cookware set","Knives and boards","Cutlery for eight","Plates, bowls, glasses","Microwave","Toaster","Coffee maker","Kettle","Rice cooker","Blender"],
     photos:["images/kitchen-1.jpg"]
   },
   "dining": {
     name:"Dining room", open:false,
     specs:[["Shared","Yes"],["Table","Seats eight"],["Storage","Sideboard"]],
-    items:["Dining table","Eight chairs","Sideboard","Table linens","Serving dishes"],
+    items:["Dining table","Eight chairs","Sideboard","Serving dishes"],
     photos:["images/dining-1.jpg"]
   },
   "bath": {
@@ -392,8 +430,7 @@ const BILLS = {
 };
 const TOTALS = { here:"$725", typical:"$904" };
 
-/* Categories for the "what is included" section.
-   free:true marks a utility, which renders in brass instead of mint. */
+/* free:true marks a utility, which renders in brass instead of green */
 const INCLUDED = [
   { key:"utilities", label:"Utilities", free:true,
     blurb:"All four are on, in my name, and paid for. Nothing to set up, nothing to split, no deposits.",
@@ -421,7 +458,7 @@ const INCLUDED = [
 
   { key:"living", label:"Living room",
     blurb:"Set up already, so there is somewhere to sit on night one.",
-    items:["Couch","Armchair","Coffee table","Side table","Rug","TV","Floor lamp","Bookshelf","Dining table","Dining chairs"] },
+    items:["Sofa","Armchairs","Coffee table","Side table","Rug","TV","Floor lamps","Bookshelf","Dining table","Dining chairs"] },
 
   { key:"bath", label:"Bathroom",
     blurb:"Stocked apart from your own towels and toiletries.",
@@ -431,26 +468,77 @@ const INCLUDED = [
 /* ============ NOTHING TO EDIT BELOW ============ */
 
 const $ = s => document.querySelector(s);
-let current = "room-a", shot = 0;
+const track = $("#track");
+let current = "room-a";
 
-/* --- rooms --- */
-function drawShot(){
-  const r = ROOMS[current], src = r.photos[shot], holder = $("#shotHolder");
-  holder.innerHTML = "";
-  const img = new Image();
-  img.className = "shot"; img.alt = r.name;
-  img.onerror = () => holder.innerHTML =
-    '<div class="shot-empty">Put your photo at<br>' + src + '</div>';
-  img.src = src;
-  holder.appendChild(img);
+const isVid = p => /\.(mp4|webm|mov)$/i.test(p);
+
+/* --- gallery --- */
+function buildGallery(){
+  const r = ROOMS[current];
+
+  track.innerHTML = r.photos.map((p,i) => {
+    const inner = isVid(p)
+      ? '<video src="'+p+'" muted loop playsinline preload="metadata" controls></video>'
+      : '<img src="'+p+'" alt="'+r.name+'" onerror="this.parentNode.innerHTML=\'<div class=&quot;empty&quot;>Put your photo at<br>'+p+'</div>\'">';
+    return '<div class="slide" data-i="'+i+'">'+inner+'</div>';
+  }).join("");
 
   $("#thumbs").innerHTML = r.photos.length > 1
-    ? r.photos.map((p,i) => '<button data-i="'+i+'" aria-current="'+(i===shot)+'"><img src="'+p+'" alt=""></button>').join("")
+    ? r.photos.map((p,i) =>
+        '<button data-i="'+i+'" aria-current="'+(i===0)+'">' +
+        (isVid(p) ? '<span class="vthumb">&#9654;</span>' : '<img src="'+p+'" alt="">') +
+        '</button>').join("")
     : "";
+
+  const many = r.photos.length > 1;
+  $("#prev").style.display = many ? "" : "none";
+  $("#next").style.display = many ? "" : "none";
+  $("#counter").style.display = many ? "" : "none";
+
+  track.scrollLeft = 0;
+  sync();
 }
 
+function sync(){
+  const r = ROOMS[current];
+  const i = Math.round(track.scrollLeft / track.clientWidth) || 0;
+
+  document.querySelectorAll("#thumbs button").forEach(b =>
+    b.setAttribute("aria-current", +b.dataset.i === i));
+  $("#counter").textContent = (i+1) + " / " + r.photos.length;
+
+  /* only the slide you are looking at plays */
+  track.querySelectorAll("video").forEach(v => {
+    const si = +v.closest(".slide").dataset.i;
+    if(si === i){ v.play().catch(() => {}); } else { v.pause(); }
+  });
+}
+
+function go(step){
+  track.scrollBy({ left: step * track.clientWidth, behavior:"smooth" });
+}
+
+let scrollTimer;
+track.addEventListener("scroll", () => {
+  clearTimeout(scrollTimer);
+  scrollTimer = setTimeout(sync, 90);
+});
+$("#prev").addEventListener("click", () => go(-1));
+$("#next").addEventListener("click", () => go(1));
+$("#thumbs").addEventListener("click", e => {
+  const b = e.target.closest("button");
+  if(b) track.scrollTo({ left: +b.dataset.i * track.clientWidth, behavior:"smooth" });
+});
+track.addEventListener("keydown", e => {
+  if(e.key === "ArrowRight"){ e.preventDefault(); go(1); }
+  if(e.key === "ArrowLeft"){ e.preventDefault(); go(-1); }
+});
+window.addEventListener("resize", sync);
+
+/* --- rooms --- */
 function selectRoom(key){
-  current = key; shot = 0;
+  current = key;
   const r = ROOMS[key];
   document.querySelectorAll(".room").forEach(g => g.classList.toggle("is-selected", g.dataset.room === key));
   $("#dName").textContent = r.name;
@@ -459,7 +547,7 @@ function selectRoom(key){
   chip.className = "chip" + (r.open ? "" : " taken");
   $("#dSpecs").innerHTML = r.specs.map(s => "<li><span>"+s[0]+"</span><span>"+s[1]+"</span></li>").join("");
   $("#dItems").innerHTML = r.items.map(i => "<li>"+i+"</li>").join("");
-  drawShot();
+  buildGallery();
 }
 
 document.querySelectorAll(".room").forEach(g => {
@@ -469,10 +557,6 @@ document.querySelectorAll(".room").forEach(g => {
   g.addEventListener("keydown", e => {
     if(e.key === "Enter" || e.key === " "){ e.preventDefault(); selectRoom(g.dataset.room); }
   });
-});
-$("#thumbs").addEventListener("click", e => {
-  const b = e.target.closest("button");
-  if(b){ shot = +b.dataset.i; drawShot(); }
 });
 
 /* --- shopping list --- */
