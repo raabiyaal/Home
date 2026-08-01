@@ -313,7 +313,7 @@ footer{padding:48px 0 76px;color:var(--line);font-size:.8rem}
       <h2 id="dName"></h2>
       <p style="margin:14px 0 0"><span class="chip" id="dChip"></span></p>
       <ul class="specs" id="dSpecs"></ul>
-      <p class="eyebrow" style="margin-bottom:10px">Already in this room</p>
+      <p class="eyebrow" id="dItemsHead" style="margin-bottom:10px">Already in this room</p>
       <ul class="inroom" id="dItems"></ul>
     </div>
   </div>
@@ -585,7 +585,8 @@ function selectRoom(key){
     : "Shared space";
   chip.className = "chip" + (r.open ? "" : " taken");
   $("#dSpecs").innerHTML = r.specs.map(s => "<li><span>"+s[0]+"</span><span>"+s[1]+"</span></li>").join("");
-  $("#dItems").innerHTML = r.items.map(i => "<li>"+i+"</li>").join("");
+  $("#dItems").innerHTML = (r.items || []).map(i => "<li>"+i+"</li>").join("");
+  $("#dItemsHead").style.display = (r.items && r.items.length) ? "" : "none";
   buildGallery();
 }
 
