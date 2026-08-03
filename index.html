@@ -198,6 +198,83 @@ header h1 em{font-style:normal;color:var(--brass)}
 .whatsapp-link:hover{background:var(--brass);color:var(--ink)}
 footer{padding:48px 0 76px;color:var(--line);font-size:.8rem}
 
+/* ---------- neighbourhood map ---------- */
+:root{ --lake:#0E2C31; }
+
+.hood-map{margin-top:40px}
+.hood-map svg{width:100%;height:auto;display:block}
+
+.hood-water{fill:var(--lake);stroke:rgba(60,98,94,.55);stroke-width:2}
+.hood-street{stroke:rgba(60,98,94,.75);stroke-width:3;fill:none}
+.hood-street.big{stroke-width:6}
+.hood-rail{stroke:var(--line);stroke-width:3;fill:none;stroke-dasharray:2 13;stroke-linecap:round}
+.hood-label{font-family:"IBM Plex Mono",monospace;fill:var(--line);font-size:17px}
+.hood-ring{fill:none;stroke:var(--brass);stroke-width:2;stroke-dasharray:5 12;opacity:.35}
+.hood-ringlab{font-family:"IBM Plex Mono",monospace;fill:var(--brass);font-size:16px;opacity:.6}
+
+.hood-home circle{fill:var(--brass)}
+.hood-home text{font-family:"IBM Plex Mono",monospace;fill:var(--paper);font-size:24px;letter-spacing:.04em}
+
+.pin{cursor:pointer}
+.pin .mark{fill:var(--panel);stroke:var(--brass);stroke-width:3;transition:.2s}
+.pin text{font-family:"IBM Plex Mono",monospace;fill:var(--muted);font-size:20px;pointer-events:none;transition:.2s}
+.pin:hover .mark{fill:var(--brass)}
+.pin:hover text{fill:var(--paper)}
+.pin.is-on .mark{fill:var(--paper);stroke:var(--paper)}
+.pin.is-on text{fill:var(--paper)}
+.pin.is-off{opacity:.22}
+.pin:focus{outline:none}
+.pin:focus-visible .mark{stroke:var(--paper);stroke-width:5}
+
+.hood-hint{font-family:"IBM Plex Mono",monospace;font-size:.76rem;color:#fff;margin:14px 0 0}
+.hood-key{display:flex;flex-wrap:wrap;gap:18px;margin:16px 0 0;padding:0;list-style:none;
+  font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--line)}
+.hood-key li{display:flex;align-items:center;gap:8px}
+.hood-key svg{width:14px;height:14px;overflow:visible}
+.hood-key .mark{fill:none;stroke:var(--brass);stroke-width:2.5}
+
+.hood-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:36px 0 24px}
+.hood-tabs button{
+  font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.12em;
+  text-transform:uppercase;background:transparent;color:var(--muted);
+  border:1px solid rgba(60,98,94,.9);padding:10px 16px;cursor:pointer;transition:.2s;
+}
+.hood-tabs button:hover{color:var(--paper);border-color:var(--brass)}
+.hood-tabs button[aria-pressed="true"]{background:var(--brass);color:var(--ink);border-color:var(--brass);font-weight:500}
+.hood-tabs button i{font-style:normal;opacity:.6;margin-left:7px}
+
+.hood-list{list-style:none;padding:0;margin:0;border-top:1px solid rgba(60,98,94,.55)}
+.hood-list li{border-bottom:1px solid rgba(60,98,94,.55)}
+.hood-list button{
+  width:100%;display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+  background:transparent;border:none;padding:14px 4px;cursor:pointer;text-align:left;
+  font-family:"Inter Tight",sans-serif;font-size:.95rem;color:var(--paper);transition:.2s;
+}
+.hood-list button:hover{background:rgba(60,98,94,.18)}
+.hood-list button[aria-pressed="true"]{background:rgba(201,164,92,.14)}
+.hood-list .what{
+  display:block;font-family:"IBM Plex Mono",monospace;font-size:.72rem;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--line);margin-top:3px;
+}
+.hood-list .mins{font-family:"IBM Plex Mono",monospace;font-size:.8rem;color:var(--brass);white-space:nowrap}
+
+.hood-note{color:var(--muted);margin:26px 0 0;max-width:52ch}
+.hood-note a{color:var(--brass)}
+
+.hood-address-link{
+  display:inline-flex;align-items:center;justify-content:center;
+  margin-top:18px;padding:12px 18px;border-radius:999px;
+  background:var(--brass);color:var(--ink);text-decoration:none;
+  font-family:"IBM Plex Mono",monospace;font-size:.75rem;
+  letter-spacing:.12em;text-transform:uppercase;font-weight:600;
+  border:1px solid rgba(201,164,92,.8);transition:transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+  box-shadow:0 8px 20px rgba(201,164,92,.18);
+}
+.hood-address-link:hover{
+  transform:translateY(-1px);box-shadow:0 12px 22px rgba(201,164,92,.22);
+}
+.hood-address-link:focus-visible{outline:2px solid var(--paper);outline-offset:4px}
+
 @media (max-width:780px){
   .detail{grid-template-columns:1fr;gap:24px}
   section{padding:54px 0}
@@ -243,17 +320,17 @@ footer{padding:48px 0 76px;color:var(--line);font-size:.8rem}
   </g>
 
   <g class="room" data-room="room-c" tabindex="0" role="button" aria-label="Room C">
-    <polygon points="425,135 470,80 825,80 825,415 425,415"/>
+    <polygon points="425,135 470,80 815,80 815,415 425,415"/>
     <text class="r-name" x="505" y="200">Room C</text>
   </g>
 
   <g class="room" data-room="room-b" tabindex="0" role="button" aria-label="Room B">
-    <polygon points="825,80 1080,80 1140,135 1140,360 980,360 980,415 825,415"/>
+    <polygon points="815,80 1080,80 1140,135 1140,360 980,360 980,415 815,415"/>
     <text class="r-name" x="855" y="150">Room B</text>
   </g>
 
   <g class="room" data-room="living" tabindex="0" role="button" aria-label="Living room">
-    <polygon points="1140,135 1580,135 1645,195 1645,420 1570,470 1140,470"/>
+    <polygon points="1140,135 1580,135 1645,195 1645,420 1570,475 1140,475"/>
     <text class="r-name" x="1190" y="205">Living</text>
   </g>
 
@@ -263,12 +340,12 @@ footer{padding:48px 0 76px;color:var(--line);font-size:.8rem}
   </g>
 
   <g class="room" data-room="bath" tabindex="0" role="button" aria-label="Bathroom">
-    <polygon points="500,480 745,480 745,700 500,700"/>
+    <polygon points="500,475 745,475 745,700 500,700"/>
     <text class="r-name" x="535" y="545">Bath</text>
   </g>
 
   <g class="room" data-room="room-a" tabindex="0" role="button" aria-label="Room A">
-    <polygon points="1045,475 1435,475 1435,770 1045,770"/>
+    <polygon points="1045,475 1410,475 1410,770 1045,770"/>
     <text class="r-name" x="1115" y="545">Room A</text>
   </g>
 
@@ -282,7 +359,7 @@ footer{padding:48px 0 76px;color:var(--line);font-size:.8rem}
     <line class="window" x1="1590" y1="143" x2="1640" y2="192"/>
     <line class="window" x1="1640" y1="224" x2="1640" y2="382"/>
     <line class="window" x1="1640" y1="420" x2="1590" y2="460"/>
-    <line class="window" x1="1435" y1="600" x2="1435" y2="700"/>
+    <line class="window" x1="1410" y1="600" x2="1410" y2="700"/>
     <line class="window" x1="500" y1="585" x2="500" y2="625"/>
     <line x1="750" y1="416" x2="810" y2="416" stroke="#ff5a5a" stroke-width="4" stroke-linecap="round"/>
     <line x1="680" y1="473" x2="730" y2="473" stroke="#ff5a5a" stroke-width="4" stroke-linecap="round"/>
@@ -356,6 +433,76 @@ footer{padding:48px 0 76px;color:var(--line);font-size:.8rem}
   <div class="tabs" id="tabs" role="group" aria-label="Categories"></div>
   <p class="blurb" id="invBlurb"></p>
   <ul class="inv" id="inv"></ul>
+</section>
+
+<!-- ============ WHERE IT IS ============ -->
+<section id="location">
+  <p class="eyebrow">Where it is</p>
+  <h2>Everything is closeby!</h2>
+  <p class="lede">1447 E 52nd St</p>
+  <a class="hood-address-link" href="https://maps.apple/p/1kEhrAt4DsxHed" target="_blank" rel="noopener noreferrer">Open in Apple Maps</a>
+  <p class="lede">The downtown metra/bus is a 4-minute walk, Whole Foods is 3 minutes away, and the heart of Hyde Park along 53rd Street is 2 minutes away.</p>
+  <p class="lede">You will not need a car and you will not miss having one.</p>
+
+  <div class="hood-map">
+    <svg id="hoodSvg" viewBox="0 0 1200 1200" role="img" aria-label="Map of the neighbourhood">
+
+      <!-- Lake Michigan -->
+      <path class="hood-water" d="M930 0 L985 344 L1045 550 L1080 700 L1160 720 L1165 775 L1085 800 L1078 963 L1095 1200 L1200 1200 L1200 0 Z"/>
+      <text class="hood-label" x="1110" y="330" fill="#3C625E">Lake</text>
+      <text class="hood-label" x="1110" y="356" fill="#3C625E">Michigan</text>
+
+      <!-- streets -->
+      <line class="hood-street big" x1="40" y1="344" x2="995" y2="344"/>
+      <line class="hood-street"     x1="40" y1="447" x2="1050" y2="447" stroke-width="2.2"/>
+      <line class="hood-street big" x1="40" y1="550" x2="1050" y2="550"/>
+      <line class="hood-street big" x1="40" y1="756" x2="1150" y2="756"/>
+      <line class="hood-street"     x1="40" y1="963" x2="1080" y2="963"/>
+      <line class="hood-street"     x1="304" y1="120" x2="304" y2="1200"/>
+      <line class="hood-street big" x1="700" y1="120" x2="700" y2="1200"/>
+      <path  class="hood-street"     d="M940 120 L1000 400 L1055 700 L1075 1200"/>
+
+      <text class="hood-label" x="52" y="332">E 51st St</text>
+      <text class="hood-label" x="52" y="435">E 52nd St</text>
+      <text class="hood-label" x="52" y="538">E 53rd St</text>
+      <text class="hood-label" x="52" y="744">E 55th St</text>
+      <text class="hood-label" x="52" y="951">E 57th St</text>
+      <text class="hood-label" x="316" y="1180">S Woodlawn</text>
+      <text class="hood-label" x="715" y="1180">Lake Park</text>
+
+      <!-- walk rings, 5 / 10 / 15 / 20 minutes -->
+      <circle class="hood-ring" cx="561" cy="447" r="160"/>
+      <circle class="hood-ring" cx="561" cy="447" r="320"/>
+      <circle class="hood-ring" cx="561" cy="447" r="480"/>
+      <circle class="hood-ring" cx="561" cy="447" r="640"/>
+      <text class="hood-ringlab" x="410" y="585">5 min</text>
+      <text class="hood-ringlab" x="310" y="710">10 min</text>
+      <text class="hood-ringlab" x="170" y="805">15 min</text>
+      <text class="hood-ringlab" x="85"  y="930">20 min</text>
+
+      <!-- pins get drawn in here by the script -->
+      <g id="hoodPins"></g>
+
+      <!-- the flat -->
+      <g class="hood-home">
+        <circle cx="561" cy="447" r="13"/>
+        <circle cx="561" cy="447" r="20" fill="none" stroke="#C9A45C" stroke-width="3"/>
+        <text x="561" y="500" text-anchor="middle">Apartment</text>
+      </g>
+    </svg>
+  </div>
+
+  <p class="hood-hint">Tap any marker to see how far it is.</p>
+  <ul class="hood-key">
+    <li><svg viewBox="-8 -8 16 16"><rect class="mark" x="-6" y="-6" width="12" height="12"/></svg> Trains and buses</li>
+    <li><svg viewBox="-8 -8 16 16"><circle class="mark" r="6"/></svg> Food and shops</li>
+    <li><svg viewBox="-8 -8 16 16"><path class="mark" d="M0 -7 L7 0 L0 7 L-7 0 Z"/></svg> Outdoors and campus</li>
+  </ul>
+
+  <div class="hood-tabs" id="hoodTabs" role="group" aria-label="Filter the map"></div>
+  <ul class="hood-list" id="hoodList"></ul>
+
+  <p class="hood-note" id="hoodNote"></p>
 </section>
 
 <!-- ============ CONTACT ============ -->
@@ -672,6 +819,152 @@ $("#tabs").addEventListener("click", e => {
 selectRoom("room-a");
 setBills("here");
 setCat(0);
+</script>
+
+<script>
+/* ============ NEIGHBOURHOOD MAP ============ */
+(function(){
+/* ==========================================================
+   EDIT HERE.
+
+   To add a place: open it in Google Maps, right click the pin,
+   click the latitude and longitude to copy them, and paste
+   them in below. The map works out where to draw it.
+
+   kind is "transit", "food" or "open". That sets the marker
+   shape and which filter it appears under.
+
+   mins is the walking time. These are estimates off the map,
+   so check the ones you care about before you publish.
+
+   side is which way the label sits: "r" or "l".
+   dy nudges a label up or down if two of them collide.
+   ========================================================== */
+
+var HOME = { lat:41.8012, lon:-87.5899 };
+
+var PLACES = [
+  { name:"Metra/6 (51st & Lake Park)",  what:"Downtown Millennium Station in 15mins", kind:"transit", mins:4, lat:41.80322,  lon:-87.58635,  side:"r" },
+  { name:"172 (51st & Blackstone)", what:"Routes 172 to UChicago & Back",      kind:"transit", mins:3,  lat:41.80322, lon:-87.590645, side:"l" },
+  { name:"UChicago Shuttle (Harper & 53rd)", what:"UChicago Shuttle to Campus & Back", kind:"transit", mins:4,  lat:41.799779, lon:-87.587910, side:"r", dy:9 },
+  //{ name:"Metra, 55th/56th/57th", what:"The second station",    kind:"transit", mins:13, lat:41.793354, lon:-87.587476, side:"r" },
+
+  { name:"Whole Foods",  what:"Groceries, open till 10",  kind:"food", mins:3,  lat:41.8026032, lon:-87.5879711, side:"l" },
+  { name:"Target",       what:"Groceries and everything else", kind:"food", mins:6, lat:41.7997448, lon:-87.5942364, side:"r", dy:-14 },
+  { name:"CVS",          what:"Pharmacy, open 24 hours",  kind:"food", mins:8,  lat:41.7997448, lon:-87.595401,  side:"l" },
+  { name:"Trader Joes", what:"Trader Joe's, post office, hardware, books", kind:"food", mins:9, lat:41.796256, lon:-87.5881209, side:"l" },
+  { name:"Valley of Jordan", what:"Middle Eastern grocer", kind:"food", mins:14, lat:41.7992761, lon:-87.6008587, side:"r" },
+  //{ name:"Open Produce", what:"Corner shop, open till midnight", kind:"food", mins:12, lat:41.7951087, lon:-87.5851026, side:"r" },
+
+  { name:"Promontory Point", what:"Lakefront and the skyline", kind:"open", mins:19, lat:41.795999,  lon:-87.5770023, side:"l" },
+  { name:"Chicago Public Library",    what:"Chicago Library open till 5",              kind:"open", mins:9, lat:41.80622, lon:-87.590645,   side:"r" },
+  { name:"UChicago Quad",    what:"Everything UChicago is here",              kind:"open", mins:26, lat:41.7895851, lon:-87.59966,   side:"r" },
+  { name:"Regenstein Library",    what:"Main Library",              kind:"open", mins:23, lat:41.7931700, lon:-87.60166,   side:"r" }
+];
+
+var TABS = [
+  { key:"all",     label:"Everything" },
+  { key:"transit", label:"Getting around" },
+  { key:"food",    label:"Food and shops" },
+  { key:"open",    label:"Outdoors" }
+];
+
+var NOTE = 'Walking times are measured door to door on foot. This map highlights a sample of nearby places; many more are in the neighborhood.';
+
+/* ========== NOTHING TO EDIT BELOW ========== */
+
+/* turns real coordinates into map coordinates */
+var BOX = { north:41.8090, west:-87.6030, pxLon:42847, pxLat:57309 };
+function px(lon){ return (lon - BOX.west) * BOX.pxLon; }
+function py(lat){ return (BOX.north - lat) * BOX.pxLat; }
+
+var SHAPE = {
+  transit: '<rect class="mark" x="-11" y="-11" width="22" height="22"/>',
+  food:    '<circle class="mark" r="11"/>',
+  open:    '<path class="mark" d="M0 -13 L13 0 L0 13 L-13 0 Z"/>'
+};
+
+var pinBox  = document.getElementById("hoodPins");
+var tabBox  = document.getElementById("hoodTabs");
+var listBox = document.getElementById("hoodList");
+var filter  = "all";
+var chosen  = null;
+
+document.getElementById("hoodNote").textContent = NOTE;
+
+/* draw the markers */
+pinBox.innerHTML = PLACES.map(function(p, i){
+  var x = px(p.lon), y = py(p.lat);
+  var right = p.side !== "l";
+  var tx = right ? 22 : -22;
+  var ty = 7 + (p.dy || 0);
+  return '<g class="pin" data-i="' + i + '" data-kind="' + p.kind + '"' +
+         ' transform="translate(' + x.toFixed(1) + ',' + y.toFixed(1) + ')"' +
+         ' tabindex="0" role="button" aria-label="' + p.name + '">' +
+         SHAPE[p.kind] +
+         '<text x="' + tx + '" y="' + ty + '" text-anchor="' + (right ? "start" : "end") + '">' + p.name + '</text>' +
+         '</g>';
+}).join("");
+
+/* the filter buttons */
+tabBox.innerHTML = TABS.map(function(t){
+  var n = t.key === "all" ? PLACES.length
+        : PLACES.filter(function(p){ return p.kind === t.key; }).length;
+  return '<button data-key="' + t.key + '" aria-pressed="' + (t.key === "all") + '">' +
+         t.label + ' <i>' + n + '</i></button>';
+}).join("");
+
+function draw(){
+  listBox.innerHTML = PLACES.map(function(p, i){
+    if(filter !== "all" && p.kind !== filter) return "";
+    return '<li><button data-i="' + i + '" aria-pressed="' + (chosen === i) + '">' +
+           '<span>' + p.name + '<span class="what">' + p.what + '</span></span>' +
+           '<span class="mins">' + p.mins + ' min walk</span>' +
+           '</button></li>';
+  }).join("");
+
+  Array.prototype.forEach.call(pinBox.children, function(g, i){
+    var hidden = filter !== "all" && PLACES[i].kind !== filter;
+    g.classList.toggle("is-off", hidden);
+    g.classList.toggle("is-on", chosen === i);
+  });
+}
+
+function pick(i){
+  chosen = (chosen === i) ? null : i;
+  if(chosen !== null && filter !== "all" && PLACES[chosen].kind !== filter) filter = "all";
+  Array.prototype.forEach.call(tabBox.children, function(b){
+    b.setAttribute("aria-pressed", b.dataset.key === filter);
+  });
+  draw();
+}
+
+pinBox.addEventListener("click", function(e){
+  var g = e.target.closest(".pin");
+  if(g) pick(+g.dataset.i);
+});
+pinBox.addEventListener("keydown", function(e){
+  if(e.key !== "Enter" && e.key !== " ") return;
+  var g = e.target.closest(".pin");
+  if(g){ e.preventDefault(); pick(+g.dataset.i); }
+});
+listBox.addEventListener("click", function(e){
+  var b = e.target.closest("button");
+  if(b) pick(+b.dataset.i);
+});
+tabBox.addEventListener("click", function(e){
+  var b = e.target.closest("button");
+  if(!b) return;
+  filter = b.dataset.key;
+  chosen = null;
+  Array.prototype.forEach.call(tabBox.children, function(x){
+    x.setAttribute("aria-pressed", x.dataset.key === filter);
+  });
+  draw();
+});
+
+draw();
+})();
 </script>
 </body>
 </html>
